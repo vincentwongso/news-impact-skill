@@ -1,0 +1,22 @@
+# Copy to config.yaml and edit. API keys come from environment variables only.
+watchlist:
+  - EURUSD
+  - XAUUSD
+  - GBPUSD
+
+# deepseek-v4-flash (default, cheap+good) | haiku (if Anthropic-native) | ollama:llama3.1:8b (local)
+model: deepseek-v4-flash
+
+lookback_hours: 4
+min_severity: medium        # low | medium | high
+
+sources:
+  yahoo:   { enabled: true }
+  x:       { enabled: false, accounts: ["@..."] }          # stub (paid API)
+  finnhub: { enabled: false, api_key_env: FINNHUB_KEY }    # stub
+
+aliases:
+  EUR: [Lagarde, ECB, euro, eurozone]
+  USD: [Powell, Fed, FOMC, CPI, NFP]
+  XAU: [gold, bullion, XAU]
+  GBP: [BoE, Bailey, sterling, pound]
