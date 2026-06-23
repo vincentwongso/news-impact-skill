@@ -16,6 +16,7 @@ env/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.rtk/
 
 # Skill runtime artifacts
 skills/news-impact/**/config.yaml
@@ -29,3 +30,7 @@ skills/news-impact/**/config.yaml
 
 # OS
 .DS_Store
+
+# Local agent/tooling artifacts
+.gitnexus
+.claude/
