@@ -1,3 +1,4 @@
+import pytest
 from datetime import datetime, timezone
 from models import NewsItem, Impact, Briefing, RankerOutput, make_id
 
@@ -16,9 +17,9 @@ def test_newsitem_naive_datetime_is_coerced_to_utc():
     item = NewsItem(title="t", summary="s", url="u", source="yahoo",
                     published=datetime(2026, 6, 19, 12, 30))
     assert item.published.tzinfo is not None
+    assert item.published.utcoffset().total_seconds() == 0
 
 def test_impact_confidence_bounds_enforced():
-    import pytest
     with pytest.raises(Exception):
         Impact(symbol="EURUSD", direction="bullish", severity="high",
                horizon="intraday", confidence=1.5, why="x")

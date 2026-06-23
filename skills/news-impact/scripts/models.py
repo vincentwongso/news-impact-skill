@@ -4,7 +4,7 @@ import hashlib
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, computed_field, field_validator
 
 Direction = Literal["bullish", "bearish", "neutral"]
 Severity = Literal["low", "medium", "high"]
@@ -17,7 +17,6 @@ def make_id(title: str, url: str, published: datetime) -> str:
 
 
 class NewsItem(BaseModel):
-    id: str = ""
     title: str
     summary: str
     url: str
@@ -33,10 +32,10 @@ class NewsItem(BaseModel):
             return v.replace(tzinfo=timezone.utc)
         return v.astimezone(timezone.utc)
 
-    @model_validator(mode="after")
-    def _compute_id(self) -> "NewsItem":
-        object.__setattr__(self, "id", make_id(self.title, self.url, self.published))
-        return self
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def id(self) -> str:
+        return make_id(self.title, self.url, self.published)
 
 
 class Impact(BaseModel):
