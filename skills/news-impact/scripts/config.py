@@ -68,3 +68,54 @@ def apply_overrides(
         return Config.model_validate(data)
     except ValidationError as exc:
         raise ConfigError(f"Invalid override: {exc}") from exc
+
+
+Provider = Literal["anthropic", "openai_compat", "ollama"]
+
+
+class ModelSpec(BaseModel):
+    provider: Provider
+    model_id: str
+    base_url: str | None = None
+    api_key_env: str | None = None
+
+
+# Friendly alias -> concrete provider spec.
+# NOTE: confirm the exact DeepSeek API model string; placeholder below.
+_REGISTRY: dict[str, ModelSpec] = {
+    "deepseek-v4-flash": ModelSpec(
+        provider="openai_compat",
+        model_id="deepseek-chat",  # TODO-CONFIRM exact DeepSeek model id
+        base_url="https://api.deepseek.com",
+        api_key_env="DEEPSEEK_API_KEY",
+    ),
+    "haiku": ModelSpec(
+        provider="anthropic",
+        model_id="claude-haiku-4-5",
+        api_key_env="ANTHROPIC_API_KEY",
+    ),
+}
+
+_PREFIX = {
+    "ollama": ModelSpec(provider="ollama", model_id="",
+                        base_url="http://localhost:11434/v1"),
+    "openai": ModelSpec(provider="openai_compat", model_id="",
+                        base_url="https://api.openai.com/v1",
+                        api_key_env="OPENAI_API_KEY"),
+    "openrouter": ModelSpec(provider="openai_compat", model_id="",
+                            base_url="https://openrouter.ai/api/v1",
+                            api_key_env="OPENROUTER_API_KEY"),
+}
+
+
+def resolve_model(model: str) -> ModelSpec:
+    if ":" in model:
+        prefix, rest = model.split(":", 1)
+        if prefix in _PREFIX:
+            return _PREFIX[prefix].model_copy(update={"model_id": rest})
+    if model in _REGISTRY:
+        return _REGISTRY[model]
+    raise ConfigError(
+        f"Unknown model '{model}'. Use deepseek-v4-flash, haiku, "
+        f"ollama:<model>, openai:<model>, or openrouter:<model>."
+    )
