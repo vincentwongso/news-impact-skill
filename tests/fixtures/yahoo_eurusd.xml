@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Yahoo Finance EURUSD=X</title>
+    <item>
+      <title>US CPI comes in above forecast at 3.4% y/y</title>
+      <link>https://finance.yahoo.com/news/us-cpi-hot-123.html</link>
+      <description>Inflation surprised to the upside in May.</description>
+      <pubDate>Thu, 19 Jun 2026 12:30:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>ECB officials signal caution on cuts</title>
+      <link>https://finance.yahoo.com/news/ecb-caution-456.html</link>
+      <description>Lagarde stressed data dependence.</description>
+      <pubDate>Thu, 19 Jun 2026 11:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>
