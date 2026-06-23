@@ -8,6 +8,12 @@ from models import RankerOutput
 from ranker.base import Ranker
 
 
+# Non-streaming output cap. Haiku 4.5 supports up to 64K output tokens, but the
+# SDK recommends staying near ~16K for non-streaming requests to avoid HTTP
+# timeouts. 16K gives a batch of ~10 items ample room for multi-impact results.
+MAX_OUTPUT_TOKENS = 16000
+
+
 class AnthropicRanker(Ranker):
     TOOL_NAME = "emit_ranker_output"
 
@@ -28,7 +34,7 @@ class AnthropicRanker(Ranker):
         client = self._client()
         msg = client.messages.create(
             model=self.spec.model_id,
-            max_tokens=4096,
+            max_tokens=MAX_OUTPUT_TOKENS,
             system=system,
             tools=[{
                 "name": self.TOOL_NAME,
