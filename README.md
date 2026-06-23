@@ -21,6 +21,10 @@ design, data model, and extension points.
 
 ## Install
 
+> **AI agents:** point your agent at [`AGENTS.md`](AGENTS.md) — it has a
+> deterministic, copy-pasteable install + verify sequence written for Claude Code,
+> Hermes, OpenClaw, and other agentskills.io runtimes.
+
 ```bash
 pip install -e .          # Python 3.11+
 cp skills/news-impact/config.example.yaml config.yaml
