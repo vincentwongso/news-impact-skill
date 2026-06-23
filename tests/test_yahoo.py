@@ -23,3 +23,22 @@ def test_parse_feed_handles_empty_or_garbage():
 def test_yahoo_source_registered():
     from sources.base import SOURCE_REGISTRY
     assert SOURCE_REGISTRY["yahoo"] is YahooSource
+
+def test_parse_feed_skips_entries_without_date():
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel>
+  <item>
+    <title>Dated item</title>
+    <link>https://finance.yahoo.com/news/dated.html</link>
+    <description>has a date</description>
+    <pubDate>Thu, 19 Jun 2026 12:30:00 GMT</pubDate>
+  </item>
+  <item>
+    <title>Undated item</title>
+    <link>https://finance.yahoo.com/news/undated.html</link>
+    <description>no pubDate</description>
+  </item>
+</channel></rss>"""
+    items = parse_feed(xml, source="yahoo")
+    assert len(items) == 1
+    assert items[0].title == "Dated item"

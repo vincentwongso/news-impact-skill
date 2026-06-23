@@ -20,10 +20,10 @@ def yahoo_symbol(symbol: str) -> str:
     return symbol if "=" in symbol else f"{symbol}=X"
 
 
-def _to_utc(entry) -> datetime:
-    tm = getattr(entry, "published_parsed", None)
+def _to_utc(entry) -> datetime | None:
+    tm = entry.get("published_parsed")
     if tm is None:
-        return datetime.now(timezone.utc)
+        return None
     return datetime(*tm[:6], tzinfo=timezone.utc)
 
 
@@ -35,13 +35,17 @@ def parse_feed(xml: str, source: str = "yahoo") -> list[NewsItem]:
         link = entry.get("link")
         if not title or not link:
             continue
+        published = _to_utc(entry)
+        if published is None:
+            print(f"[warn] yahoo: skipping undated entry: {title}", file=sys.stderr)
+            continue
         items.append(
             NewsItem(
                 title=title,
                 summary=entry.get("summary", ""),
                 url=link,
                 source=source,
-                published=_to_utc(entry),
+                published=published,
             )
         )
     return items
