@@ -1,0 +1,31 @@
+# Superpowers working docs (specs/plans) — local only
+docs/superpowers/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Skill runtime artifacts
+skills/news-impact/**/config.yaml
+*.sqlite
+*.sqlite3
+*.db
+
+# Env / secrets
+.env
+.env.*
+
+# OS
+.DS_Store
