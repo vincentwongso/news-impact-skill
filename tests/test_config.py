@@ -1,5 +1,5 @@
 import pytest
-from config import load_config, apply_overrides, Config, ConfigError
+from config import load_config, apply_overrides, ConfigError
 
 VALID = """
 watchlist: [EURUSD, XAUUSD]

@@ -13,11 +13,15 @@ def _item():
                     published=datetime(2026, 6, 19, tzinfo=timezone.utc))
 
 class _Block:
-    def __init__(self, data): self.type = "tool_use"; self.input = data
+    def __init__(self, data):
+        self.type = "tool_use"
+        self.input = data
 class _Msg:
     def __init__(self, data): self.content = [_Block(data)]
 class _FakeMessages:
-    def __init__(self, data): self._data = data; self.last_kwargs = None
+    def __init__(self, data):
+        self._data = data
+        self.last_kwargs = None
     def create(self, **kwargs):
         self.last_kwargs = kwargs
         return _Msg(self._data)

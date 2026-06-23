@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timezone
-from models import NewsItem, Impact, Briefing, RankerOutput, make_id
+from models import NewsItem, Impact, RankerOutput, make_id
 
 def _dt():
     return datetime(2026, 6, 19, 12, 30, tzinfo=timezone.utc)

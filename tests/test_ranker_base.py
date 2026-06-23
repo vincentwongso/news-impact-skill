@@ -2,7 +2,7 @@ import json
 import pytest
 from datetime import datetime, timezone
 from models import NewsItem
-from ranker.base import Ranker, RankerError, build_system_prompt, build_user_payload, PROMPT_VERSION
+from ranker.base import Ranker, RankerError, build_system_prompt, build_user_payload
 
 def _item():
     it = NewsItem(title="US CPI hot", summary="up", url="u", source="yahoo",
