@@ -20,7 +20,7 @@ class SourceConfig(BaseModel):
 class Config(BaseModel):
     model_config = ConfigDict(extra="forbid")
     watchlist: list[str] = Field(min_length=1)
-    model: str = "deepseek-v4-flash"
+    model: str = "ollama:llama3.1:8b"
     lookback_hours: int = Field(default=4, gt=0)
     min_severity: Severity = "medium"
     sources: dict[str, SourceConfig] = Field(default_factory=dict)

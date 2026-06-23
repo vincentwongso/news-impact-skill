@@ -56,15 +56,35 @@ cp skills/news-impact/config.example.yaml config.yaml
 Then edit `config.yaml`: set the user's `watchlist` (e.g. `[EURUSD, XAUUSD]`) and
 `model`. The `model` value selects the provider:
 
-| `model:`            | Provider          | Key env            |
-|---------------------|-------------------|--------------------|
-| `deepseek-v4-flash` | OpenAI-compatible | `DEEPSEEK_API_KEY` |
-| `haiku`             | Anthropic         | `ANTHROPIC_API_KEY`|
-| `ollama:<model>`    | local Ollama      | none               |
-| `openai:<model>`    | OpenAI            | `OPENAI_API_KEY`   |
+| `model:`            | Provider               | Key env            |
+|---------------------|------------------------|--------------------|
+| `ollama:<model>`    | local Ollama (default) | none               |
+| `deepseek-v4-flash` | OpenAI-compatible      | `DEEPSEEK_API_KEY` |
+| `haiku`             | Anthropic              | `ANTHROPIC_API_KEY`|
+| `openai:<model>`    | OpenAI                 | `OPENAI_API_KEY`   |
 
-API keys are read from **environment variables only** — never write a key into
-`config.yaml`. Export the one matching the chosen model (skip for Ollama):
+**Default: local Ollama (no key, no network for the LLM call).** The example config
+ships with `model: ollama:llama3.1:8b`. Set it up once:
+
+```bash
+# Install Ollama first — https://ollama.com/download
+ollama pull llama3.1:8b   # one-time model download (~4.7 GB)
+ollama serve              # serves on http://localhost:11434 (the macOS/Windows app does this for you)
+```
+
+**Verify** Ollama is reachable before running the skill:
+
+```bash
+curl -s http://localhost:11434/api/tags
+```
+
+Expect a JSON list of installed models that includes `llama3.1:8b`. If the request
+is refused, start `ollama serve`; if the model is missing, re-run `ollama pull`.
+
+**Paid alternative — DeepSeek or another hosted model.** Set `model:` to
+`deepseek-v4-flash` (or `haiku`, `openai:<model>`) and export the matching key. API
+keys are read from **environment variables only** — never write a key into
+`config.yaml`:
 
 ```bash
 export DEEPSEEK_API_KEY=...   # or ANTHROPIC_API_KEY, OPENAI_API_KEY

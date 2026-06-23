@@ -10,7 +10,7 @@ def test_skill_md_exists_with_frontmatter():
 
 def test_config_example_is_valid():
     cfg = load_config(str(ROOT / "config.example.yaml"))
-    assert cfg.model == "deepseek-v4-flash"
+    assert cfg.model == "ollama:llama3.1:8b"
     assert cfg.sources["yahoo"].enabled is True
 
 def test_reference_docs_exist():

@@ -12,7 +12,10 @@ LLM to rank each surviving story's impact per symbol. Output is JSON on stdout.
 
 1. `pip install -e .` (from the repo root).
 2. Copy `config.example.yaml` to `config.yaml`; set your `watchlist` and `model`.
-3. Export the model key (unless using Ollama): `export DEEPSEEK_API_KEY=...`.
+3. Default model is **local Ollama** (free, no key): `ollama pull llama3.1:8b`,
+   then keep `ollama serve` running on `localhost:11434`.
+   For a paid hosted model instead, set `model: deepseek-v4-flash` and
+   `export DEEPSEEK_API_KEY=...` (or `haiku` → `ANTHROPIC_API_KEY`).
 
 ## Run
 

@@ -4,8 +4,10 @@ watchlist:
   - XAUUSD
   - GBPUSD
 
-# deepseek-v4-flash (default, cheap+good) | haiku (if Anthropic-native) | ollama:llama3.1:8b (local)
-model: deepseek-v4-flash
+# Local Ollama (default) — free, no key. Run `ollama pull llama3.1:8b` and keep
+# `ollama serve` running. Paid alternatives: deepseek-v4-flash (OpenAI-compatible,
+# cheap+good) | haiku (Anthropic) | openai:<model>
+model: ollama:llama3.1:8b
 
 lookback_hours: 4
 min_severity: medium        # low | medium | high

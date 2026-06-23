@@ -30,10 +30,25 @@ pip install -e .          # Python 3.11+
 cp skills/news-impact/config.example.yaml config.yaml
 ```
 
-Set the key for your chosen model (skip for local Ollama):
+The ranker needs a model. The default is a **local Ollama** — free, no key, and
+nothing leaves your machine:
 
 ```bash
-export DEEPSEEK_API_KEY=...   # or ANTHROPIC_API_KEY for haiku
+# 1. Install Ollama — https://ollama.com/download
+# 2. Pull the model the example config uses (one-time, ~4.7 GB):
+ollama pull llama3.1:8b
+# 3. Make sure it's serving (the macOS/Windows app starts this for you):
+ollama serve
+```
+
+Ollama listens on `http://localhost:11434`, which is where the skill looks by default.
+
+**Paid alternative — DeepSeek (or any hosted model).** To use a hosted model instead
+of running one locally, set `model: deepseek-v4-flash` in `config.yaml` and export the
+matching key:
+
+```bash
+export DEEPSEEK_API_KEY=...   # or ANTHROPIC_API_KEY for haiku, OPENAI_API_KEY for openai:<model>
 ```
 
 API keys are read from environment variables only — never from config.
@@ -71,7 +86,7 @@ Flags override config: `--since`, `--min-severity`, `--watchlist`, `--source`, `
 
 ```yaml
 watchlist: [EURUSD, XAUUSD, GBPUSD]
-model: deepseek-v4-flash      # deepseek-v4-flash | haiku | ollama:llama3.1:8b | openai:<model>
+model: ollama:llama3.1:8b     # local default; or deepseek-v4-flash | haiku | openai:<model>
 lookback_hours: 4
 min_severity: medium          # low | medium | high
 sources:
@@ -87,12 +102,12 @@ See `skills/news-impact/references/` for the alias map and source details.
 
 Provider is resolved from the `model` value:
 
-| `model:`            | Provider           | Key env            |
-|---------------------|--------------------|--------------------|
-| `deepseek-v4-flash` | OpenAI-compatible  | `DEEPSEEK_API_KEY` |
-| `haiku`             | Anthropic          | `ANTHROPIC_API_KEY`|
-| `ollama:<model>`    | local Ollama       | none               |
-| `openai:<model>`    | OpenAI             | `OPENAI_API_KEY`   |
+| `model:`            | Provider                | Key env            |
+|---------------------|-------------------------|--------------------|
+| `ollama:<model>`    | local Ollama (default)  | none               |
+| `deepseek-v4-flash` | OpenAI-compatible       | `DEEPSEEK_API_KEY` |
+| `haiku`             | Anthropic               | `ANTHROPIC_API_KEY`|
+| `openai:<model>`    | OpenAI                  | `OPENAI_API_KEY`   |
 
 ## Sources
 
