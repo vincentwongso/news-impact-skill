@@ -2,6 +2,8 @@
 name = "news-impact-skill"
 version = "0.1.0"
 description = "Watchlist-scoped financial news briefing CLI"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 dependencies = [
     "pydantic>=2.6",

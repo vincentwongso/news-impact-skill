@@ -112,4 +112,4 @@ is the contract — the agent invokes it and narrates the JSON.
 
 ## License
 
-Add a `LICENSE` file before publishing (MIT recommended for this kind of tool).
+[MIT](LICENSE)
