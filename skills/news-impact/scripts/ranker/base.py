@@ -29,7 +29,10 @@ def build_system_prompt(watchlist: list[str], aliases: dict[str, list[str]]) -> 
         "- Prefer low confidence when unsure. Only use watchlist symbols.\n"
         "- 'direction' ∈ bullish|bearish|neutral; 'severity' ∈ low|medium|high; "
         "'horizon' ∈ intraday|swing|longterm; 'confidence' ∈ [0,1].\n"
-        "Respond with JSON matching the provided schema."
+        'Respond with a single JSON object of the form '
+        '{"results": [{"id": "<item id>", "impacts": [{"symbol", "direction", '
+        '"severity", "horizon", "confidence", "why"}], "grounding": "<note>"}]} '
+        "with exactly one element in 'results' per input item."
     )
 
 
@@ -57,7 +60,13 @@ class Ranker(ABC):
         for _ in range(2):
             try:
                 raw = self._complete(system, user)
-                return RankerOutput.model_validate_json(raw)
+                data = json.loads(raw)
+                # Some providers (e.g. DeepSeek in json_object mode) emit the
+                # results array at the top level rather than the documented
+                # {"results": [...]} wrapper; accept either shape.
+                if isinstance(data, list):
+                    data = {"results": data}
+                return RankerOutput.model_validate(data)
             except (ValidationError, ValueError) as exc:
                 last_exc = exc
         raise RankerError(f"Ranker returned unparseable output: {last_exc}")
