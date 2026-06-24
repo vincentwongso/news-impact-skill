@@ -19,6 +19,7 @@ env/
 .rtk/
 
 # Skill runtime artifacts
+/config.yaml
 skills/news-impact/**/config.yaml
 *.sqlite
 *.sqlite3

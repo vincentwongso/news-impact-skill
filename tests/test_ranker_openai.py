@@ -48,8 +48,9 @@ def test_complete_sends_schema_and_returns_content(monkeypatch):
     ranker._client = lambda: fake  # type: ignore
     out = ranker.rank([item], ["EURUSD"], {})
     assert out[0].id == item.id
-    # schema was attached to the request
-    assert fake.last_kwargs["response_format"]["type"] == "json_schema"
+    # portable structured-output mode attached to the request (DeepSeek rejects
+    # json_schema; json_object is accepted by all OpenAI-compatible providers)
+    assert fake.last_kwargs["response_format"]["type"] == "json_object"
 
 def test_ollama_needs_no_key(monkeypatch):
     monkeypatch.delenv("OLLAMA_API_KEY", raising=False)

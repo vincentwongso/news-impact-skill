@@ -3,7 +3,6 @@ from __future__ import annotations
 import os
 
 from config import ConfigError, ModelSpec
-from models import RankerOutput
 from ranker.base import Ranker
 
 
@@ -22,24 +21,20 @@ class OpenAICompatRanker(Ranker):
         from openai import OpenAI
         return OpenAI(base_url=self.spec.base_url, api_key=self._api_key())
 
-    def _schema(self) -> dict:
-        return {
-            "type": "json_schema",
-            "json_schema": {
-                "name": "ranker_output",
-                "schema": RankerOutput.model_json_schema(),
-                "strict": False,
-            },
-        }
-
     def _complete(self, system: str, user: str) -> str:
         client = self._client()
+        # json_object is the portable structured-output mode: OpenAI, DeepSeek,
+        # OpenRouter, and Ollama's OpenAI-compatible endpoint all accept it,
+        # whereas json_schema is rejected by DeepSeek ("This response_format
+        # type is unavailable now"). The system prompt fully specifies the
+        # output shape, and _complete_with_retry validates it against
+        # RankerOutput, so the looser mode is safe here.
         completion = client.chat.completions.create(
             model=self.spec.model_id,
             messages=[
                 {"role": "system", "content": system},
                 {"role": "user", "content": user},
             ],
-            response_format=self._schema(),
+            response_format={"type": "json_object"},
         )
         return completion.choices[0].message.content or ""
