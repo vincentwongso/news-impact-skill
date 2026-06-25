@@ -9,6 +9,10 @@ likely impact per symbol. Output is JSON on stdout.
 > **Advisory only.** It reads, ranks, and reports. It never places, sizes, or suggests
 > orders, and imports nothing broker-related.
 
+> 📖 **The story behind this:** this project is built step by step in
+> [*Feeding market news to your AI agent*](https://engineering.fintrixmarkets.com/posts/news-impact-part-2/),
+> Part 2 of the *Trade with AI agent* series on the Fintrix engineering blog.
+
 ## Demo
 
 ![news-impact-skill demo](demo/news-impact-demo.gif)
