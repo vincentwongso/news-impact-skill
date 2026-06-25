@@ -9,6 +9,15 @@ likely impact per symbol. Output is JSON on stdout.
 > **Advisory only.** It reads, ranks, and reports. It never places, sizes, or suggests
 > orders, and imports nothing broker-related.
 
+## Demo
+
+![news-impact-skill demo](demo/news-impact-demo.gif)
+
+Every moved symbol ranked by likely impact, scoped to your watchlist and grounded only
+in the headline text — blind → seeing. It reads and reports; it never trades.
+
+![ranked briefing output](demo/news-impact-briefing.png)
+
 ## How it works
 
 ```
